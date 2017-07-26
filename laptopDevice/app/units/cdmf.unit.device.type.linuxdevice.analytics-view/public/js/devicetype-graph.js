@@ -22,6 +22,7 @@ var sensorType2 = "batterypercentage";
 var sensorType1Graph;
 var sensorType2Graph;
 
+
 function drawGraph_linuxdevice(from, to)
 {
     var devices = $("#details").data("devices");

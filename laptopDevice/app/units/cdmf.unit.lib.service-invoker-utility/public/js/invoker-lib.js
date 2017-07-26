@@ -21,20 +21,13 @@ var invokerUtil = function () {
     var publicMethods = {};
     var privateMethods = {};
 
-    privateMethods.execute = function (requestMethod, requestURL, requestPayload, successCallback, errorCallback, contentType, acceptType) {
+    privateMethods.execute = function (requestMethod, requestURL, requestPayload, successCallback, errorCallback, contentType, acceptType, isSynchronous) {
         var restAPIRequestDetails = {};
         restAPIRequestDetails["requestMethod"] = requestMethod;
         restAPIRequestDetails["requestURL"] = requestURL;
         restAPIRequestDetails["requestPayload"] = requestPayload;
 
-        //TODo : Remove this
-        console.log(requestMethod);
-        console.log(requestURL);
-        console.log(requestPayload);
-
-        var appContext = "/buildingmonitor";
-
-        console.log(appContext);
+        var appContext = $("#app-context").data("app-context");
         var contentTypeValue = "application/json";
         if (contentType) {
             contentTypeValue = contentType;
@@ -42,6 +35,11 @@ var invokerUtil = function () {
         var acceptTypeValue = "application/json";
         if (acceptType) {
             acceptTypeValue = acceptType;
+        }
+
+        var synchronous = false;
+        if (isSynchronous) {
+            synchronous = true;
         }
 
         if(contentTypeValue == "application/json"){
@@ -53,6 +51,7 @@ var invokerUtil = function () {
             contentType: contentTypeValue,
             data: JSON.stringify(restAPIRequestDetails),
             accept: acceptTypeValue,
+            async : synchronous,
             success: successCallback,
             error: function (jqXHR) {
                 if (jqXHR.status == 401) {
@@ -68,22 +67,22 @@ var invokerUtil = function () {
         $.ajax(request);
     };
 
-    publicMethods.get = function (requestURL, successCallback, errorCallback, contentType, acceptType) {
+    publicMethods.get = function (requestURL, successCallback, errorCallback, contentType, acceptType, isSynchronous) {
         var requestPayload = null;
-        privateMethods.execute("GET", requestURL, requestPayload, successCallback, errorCallback, contentType, acceptType);
+        privateMethods.execute("GET", requestURL, requestPayload, successCallback, errorCallback, contentType, acceptType, isSynchronous);
     };
 
-    publicMethods.post = function (requestURL, requestPayload, successCallback, errorCallback, contentType, acceptType) {
-        privateMethods.execute("POST", requestURL, requestPayload, successCallback, errorCallback, contentType, acceptType);
+    publicMethods.post = function (requestURL, requestPayload, successCallback, errorCallback, contentType, acceptType, isSynchronous) {
+        privateMethods.execute("POST", requestURL, requestPayload, successCallback, errorCallback, contentType, acceptType, isSynchronous);
     };
 
-    publicMethods.put = function (requestURL, requestPayload, successCallback, errorCallback, contentType, acceptType) {
-        privateMethods.execute("PUT", requestURL, requestPayload, successCallback, errorCallback, contentType, acceptType);
+    publicMethods.put = function (requestURL, requestPayload, successCallback, errorCallback, contentType, acceptType, isSynchronous) {
+        privateMethods.execute("PUT", requestURL, requestPayload, successCallback, errorCallback, contentType, acceptType, isSynchronous);
     };
 
-    publicMethods.delete = function (requestURL, successCallback, errorCallback, contentType, acceptType) {
+    publicMethods.delete = function (requestURL, successCallback, errorCallback, contentType, acceptType, isSynchronous) {
         var requestPayload = null;
-        privateMethods.execute("DELETE", requestURL, requestPayload, successCallback, errorCallback, contentType, acceptType);
+        privateMethods.execute("DELETE", requestURL, requestPayload, successCallback, errorCallback, contentType, acceptType, isSynchronous);
     };
 
     return publicMethods;

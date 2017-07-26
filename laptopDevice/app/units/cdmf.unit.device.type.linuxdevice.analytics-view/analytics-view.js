@@ -34,6 +34,9 @@ function onRequest(context) {
     } else if (deviceType != null && deviceType != undefined && deviceId != null && deviceId != undefined) {
         var deviceModule = require("/app/modules/business-controllers/device.js")["deviceModule"];
         var device = deviceModule.viewDevice(deviceType, deviceId);
+
+        new Log().info(deviceType);
+        new Log().info(device);
         if (device && device.status != "error") {
             return {
                 "device": device.content,

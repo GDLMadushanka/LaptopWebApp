@@ -101,10 +101,17 @@ function setDateTime(from, to) {
     to += tzOffset;
 
     // Implement drawGraph_<device type name> method in your UI unit for analytics.
-  /*  var deviceTypes = $("#device-type-details").data("devicetypes");
+    var deviceTypes = $("#device-type-details").data("devicetypes");
     for (var i = 0; i < deviceTypes.length; i++){
-        window["drawGraph_" + deviceTypes](parseInt(from / 1000), parseInt(to / 1000));
-    }*/
+		try{
+			window["drawGraph_" + deviceTypes](parseInt(from / 1000), parseInt(to / 1000));
+		}catch(e){
+		}
+		try{
+			window["drawTable"](parseInt(from / 1000), parseInt(to / 1000));
+		}catch(e){
+		}
+    }
 }
 
 function convertDate(date) {

@@ -31,7 +31,29 @@ function onRequest() {
     var allgroups =groupModule.getGroups();
     var currentUser = userModule.getCarbonUser();
 
+    var userRoles = userModule.getRolesByUsername(currentUser.username);
+
+    function checkInUserRoles(role) {
+        var temp = userRoles.content.filter(function(item){return (item==role);});
+        if(temp) return true;
+        else return false;
+    }
+
+    log.info(checkInUserRoles("admin"));
+
     var userGroups = allgroups.filter( function(item){return (item.owner==currentUser.username);} );
+    var groupDiff = allgroups.filter(function(x) { return userGroups.indexOf(x) < 0 });
+
+    for(var i=0;i<groupDiff.length;i++) {
+        var tempGroupRoles = groupModule.getRolesOfGroup(groupDiff[i].id);
+        for(var j=0;j<tempGroupRoles.length;j++) {
+            if(checkInUserRoles(tempGroupRoles[j])) {
+                userGroups.push(groupDiff[i]);
+                break;
+            }
+        }
+    }
+
     var userDevices = alldevices.filter( function(item){return (item.enrolmentInfo.owner==currentUser.username && item.type=="linuxdevice");} );
 
     var groupsWithLaptopDevices=[];
@@ -60,7 +82,6 @@ function onRequest() {
     viewModel.permissions = permissions;
     viewModel.currentUser = currentUser;
 
-    log.info(userDevices);
 
     if (!permissions.ADD_BUILDING && !permissions.VIEW_BUILDING) {
         viewModel.permittednone = true;
