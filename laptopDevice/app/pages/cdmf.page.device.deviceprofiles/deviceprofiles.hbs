@@ -19,7 +19,7 @@
     {{css "css/groupanalytics.css"}}
 {{/zone}}
 
-{{unit "cdmf.unit.ui.title" pageTitle="Group-Analytics"}}
+{{unit "cdmf.unit.ui.title" pageTitle="Device Profiles"}}
 {{unit "cdmf.unit.ui.content.title" pageHeader=title}}
 {{unit "cdmf.unit.lib.service-invoker-utility"}}
 {{unit "cdmf.unit.lib.handlebars"}}
@@ -33,19 +33,18 @@
     </li>
     <li>
         <a href="#">
-            Group - Analytics
+            Device Profiles
         </a>
     </li>
 {{/zone}}
 
 {{#zone "content"}}
 
-    <span id="laptop-details1" data-groupId="{{groupId}}"></span>
 
     <div class="container container-bg  white-bg">
         <div class=" margin-top-double">
             <div id="div-chart">
-                {{unit deviceAnalyticsViewUnitName}}
+                {{unit deviceProfilesUnitName}}
             </div>
         </div>
     </div>

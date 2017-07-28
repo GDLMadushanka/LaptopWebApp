@@ -35,51 +35,46 @@
 {{/zone}}
 
 {{#zone "navbarActions"}}
-    {{#if permissions.ADD_BUILDING}}
+    {{#if adminUser}}
         <li>
             <!--suppress HtmlUnknownTarget -->
-            <a href="#" class="cu-btn" onclick="onAddMarker()">
+            <a href="{{@app.context}}/device/linuxdevice/deviceprofiles" class="cu-btn" onclick="onAddMarker()">
             <span class="icon fw-stack">
                 <i class="fw fw-add fw-stack-1x"></i>
                 <i class="fw fw-circle-outline fw-stack-2x"></i>
             </span>
-                Add Device
+                Add Device Profile
             </a>
         </li>
     {{/if}}
 {{/zone}}
 
-{{#if permittednone}}
-    {{#zone "body"}}
-        <div class="message message-danger" style="margin: 20px">
-            <h4><i class="icon fw fw-error"></i>401- Unauthorized</h4>
-            <p>You do not have permissions to view this page. Please contact administrator..</p>
-        </div>
-    {{/zone}}
-{{else}}
     {{#zone "body"}}
 
         Hi {{currentUser.username}}<br/>
-        Your Groups :-<br/>
-        {{#each userGroups}}
-            <p>{{this.group.name}}</p>
-            <a href="{{@app.context}}/device/linuxdevice/groupanalytics?groupId={{this.group.id}}"
-               class="btn btn-xs btn-success">Group Analytics</a>
-            <button class="btn btn-warning" onclick="showDevicesDiv('{{this.group.name}}')">Expand Group</button>
-            <br/>
-            <br/>
-            <div id="group{{this.group.name}}devices" style="display: none;">
-                {{#each this.devices}}
-                    <p>{{this.name}}</p>
-                    <a href="{{@app.context}}/device/linuxdevice?id={{this.deviceIdentifier}}"
-                       class="btn btn-primary btn-xs">Realtime analytics</a>
+        {{#if adminUser}}
+            Your Groups :-<br/>
+            {{#each userGroups}}
+                <p>{{this.group.name}}</p>
+                <a href="{{@app.context}}/device/linuxdevice/groupanalytics?groupId={{this.group.id}}"
+                   class="btn btn-xs btn-success">Group Analytics</a>
+                <button class="btn btn-warning" onclick="showDevicesDiv('{{this.group.name}}')">Expand Group</button>
+                <br/>
+                <br/>
+                <div id="group{{this.group.name}}devices" style="display: none;">
+                    {{#each this.devices}}
+                        <p>{{this.name}}</p>
+                        <a href="{{@app.context}}/device/linuxdevice?id={{this.deviceIdentifier}}"
+                           class="btn btn-primary btn-xs">Realtime analytics</a>
 
-                    <a href="{{@app.context}}/device/linuxdevice/analytics?deviceId={{this.deviceIdentifier}}&deviceName={{this.name}}"
-                       class="btn btn-info btn-xs">Batch analytics</a>
+                        <a href="{{@app.context}}/device/linuxdevice/analytics?deviceId={{this.deviceIdentifier}}&deviceName={{this.name}}"
+                           class="btn btn-info btn-xs">Batch analytics</a>
 
-                {{/each}}
-            </div>
-        {{/each}}
+                    {{/each}}
+                </div>
+            {{/each}}
+        {{/if}}
+
         <br/>
         Your Devices :-</br>
         {{#each userDevices}}
@@ -89,6 +84,7 @@
             <a href="{{@app.context}}/device/linuxdevice/analytics?deviceId={{this.deviceIdentifier}}&deviceName={{this.name}}"
                class="btn btn-info btn-xs">Batch analytics</a>
         {{/each}}
+
 
 
 
@@ -114,4 +110,4 @@
         {{js "js/nav-menu.js"}}
     {{/zone}}
 
-{{/if}}
+

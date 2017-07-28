@@ -17,7 +17,7 @@
  * under the License.
  */
 
-var log = new Log("api/invoker-api.jag");
+var log = new Log("api/laptop-api.jag");
 
 var uri = request.getRequestURI();
 var uriMatcher = new URIMatcher(String(uri));
@@ -26,24 +26,29 @@ var constants = require("/app/modules/constants.js");
 var devicemgtProps = require("/app/modules/conf-reader/main.js")["conf"];
 var serviceInvokers = require("/app/modules/oauth/token-protected-service-invokers.js")["invokers"];
 
-if (uriMatcher.match("/{context}/api/floor/{buildingId}/{floorId}")) {
-    var uploadedFile = request.getFile("files");
+if (uriMatcher.match("/{context}/api/laptop")) {
+    var uploadedData = request.getContent();
+    log.info(uploadedData);
+
     var requestHeaders = [];
 
     var contentType = request.getHeader(constants.CONTENT_TYPE_IDENTIFIER);
     requestHeaders.push({"name": constants.CONTENT_TYPE_IDENTIFIER, "value" : contentType});
     var elements = uriMatcher.elements();
-    var requestURL = "/senseme/building/" + elements.buildingId+ "/" + elements.floorId;
-    var requestPayload = uploadedFile;
+    var requestURL = "/linuxdevice/1.0.0/device/addprofile";
+    var requestPayload = "&"+ uploadedData+"&";
 
     var restAPIEndpoint = devicemgtProps["httpsURL"] + requestURL;
+    log.info(restAPIEndpoint);
+    log.info(contentType);
+
     try {
         serviceInvokers.HttpClient.post(
             restAPIEndpoint,
             requestPayload,
             function (httpMethod) {
-                response.sendRedirect("/buildingmonitor/floor?buildingId=" + elements.buildingId + "&floorId=" +
-                    elements.floorId);
+                log.info("here");
+                response.sendRedirect("/laptopDevice");
             },
             function (httpMethod) {
                 response.sendRedirect("/buildingmonitor/floor?buildingId=" + elements.buildingId + "&floorId=" +

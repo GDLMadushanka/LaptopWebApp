@@ -321,6 +321,7 @@ var invokers = function () {
             //noinspection JSUnresolvedVariable
             var HttpClient = Packages.org.apache.commons.httpclient.HttpClient;
             var httpMethodObject;
+            new Log().info("url" + url);
             switch (method) {
                 case constants["HTTP_GET"]:
                     //noinspection JSUnresolvedVariable
@@ -407,6 +408,7 @@ var invokers = function () {
                     var stringRequestEntity = new StringRequestEntity(stringify(payload));
                     //noinspection JSUnresolvedFunction
                     httpMethodObject.setRequestEntity(stringRequestEntity);
+                    new Log().info(stringify(payload));
                 }
 
             }
@@ -417,6 +419,7 @@ var invokers = function () {
                 client.executeMethod(httpMethodObject);
                 //noinspection JSUnresolvedFunction
                 var status = httpMethodObject.getStatusCode();
+                new Log().info("Status : " + status);
                 if (status >= 200 && status < 300) {
                     if (constants["STREAMING_FILES_ACCEPT_HEADERS"].indexOf(acceptTypeValue) > -1) {
                         return successCallback(httpMethodObject.getResponseBodyAsStream(),

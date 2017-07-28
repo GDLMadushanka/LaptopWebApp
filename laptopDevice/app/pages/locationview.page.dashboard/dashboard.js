@@ -18,6 +18,7 @@
 
 function onRequest() {
 
+
     var log = new Log('dashboard.js');
     var constants = require("/app/modules/constants.js");
     var devicemgtProps = require("/app/modules/conf-reader/main.js")["conf"];
@@ -28,10 +29,14 @@ function onRequest() {
 
 
     var alldevices = deviceModule.getDevices();
-    var allgroups =groupModule.getGroups();
-    var currentUser = userModule.getCarbonUser();
+
+    var currentUser = session.get(constants["USER_SESSION_KEY"]);
 
     var userRoles = userModule.getRolesByUsername(currentUser.username);
+    var adminUser = false;
+    if (userRoles.content.indexOf("admin") > -1) {
+        adminUser = true;
+    }
 
     function checkInUserRoles(role) {
         var temp = userRoles.content.filter(function(item){return (item==role);});
@@ -39,8 +44,11 @@ function onRequest() {
         else return false;
     }
 
-    log.info(checkInUserRoles("admin"));
+    var userDevices = alldevices.filter( function(item){return (item.enrolmentInfo.owner==currentUser.username && item.type=="linuxdevice");} );
 
+    if(adminUser){
+
+    var allgroups =groupModule.getGroups();
     var userGroups = allgroups.filter( function(item){return (item.owner==currentUser.username);} );
     var groupDiff = allgroups.filter(function(x) { return userGroups.indexOf(x) < 0 });
 
@@ -54,7 +62,6 @@ function onRequest() {
         }
     }
 
-    var userDevices = alldevices.filter( function(item){return (item.enrolmentInfo.owner==currentUser.username && item.type=="linuxdevice");} );
 
     var groupsWithLaptopDevices=[];
     for(var i=0;i<userGroups.length;i++) {
@@ -69,19 +76,22 @@ function onRequest() {
             });
         }
     }
-
-
-  //  log.info(devicesOfgroup);
+    }
 
     var user = session.get(constants["USER_SESSION_KEY"]);
     var permissions = userModule.getUIPermissions();
     var viewModel = {};
 
+    log.info("___________________________________________");
+    log.info(user);
+    log.info("-------------------------------------------");
+    log.info(currentUser);
+
     viewModel.userGroups = groupsWithLaptopDevices;
     viewModel.userDevices = userDevices;
     viewModel.permissions = permissions;
     viewModel.currentUser = currentUser;
-
+    viewModel.adminUser = adminUser;
 
     if (!permissions.ADD_BUILDING && !permissions.VIEW_BUILDING) {
         viewModel.permittednone = true;

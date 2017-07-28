@@ -91,7 +91,7 @@ var groupModule = {};
         } else if (permissions.LIST_GROUPS) {
             endPoint = deviceServiceEndpoint + "/groups";
         } else {
-            log.error("Access denied for user: " + carbonUser.username);
+            log.error("Access denied for user: ");
             return -1;
         }
         return serviceInvokers.XMLHttp.get(
