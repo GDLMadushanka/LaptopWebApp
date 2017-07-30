@@ -48,44 +48,39 @@ function onRequest() {
 
     if(adminUser){
 
-    var allgroups =groupModule.getGroups();
-    var userGroups = allgroups.filter( function(item){return (item.owner==currentUser.username);} );
-    var groupDiff = allgroups.filter(function(x) { return userGroups.indexOf(x) < 0 });
+        var allgroups =groupModule.getGroups();
+        var userGroups = allgroups.filter( function(item){return (item.owner==currentUser.username);} );
+        var groupDiff = allgroups.filter(function(x) { return userGroups.indexOf(x) < 0 });
 
-    for(var i=0;i<groupDiff.length;i++) {
-        var tempGroupRoles = groupModule.getRolesOfGroup(groupDiff[i].id);
-        for(var j=0;j<tempGroupRoles.length;j++) {
-            if(checkInUserRoles(tempGroupRoles[j])) {
-                userGroups.push(groupDiff[i]);
-                break;
+        for(var i=0;i<groupDiff.length;i++) {
+            var tempGroupRoles = groupModule.getRolesOfGroup(groupDiff[i].id);
+            for(var j=0;j<tempGroupRoles.length;j++) {
+                if(checkInUserRoles(tempGroupRoles[j])) {
+                    userGroups.push(groupDiff[i]);
+                    break;
+                }
             }
         }
-    }
 
-
-    var groupsWithLaptopDevices=[];
-    for(var i=0;i<userGroups.length;i++) {
-        var devicesOfgroup = groupModule.getGroupDevices(userGroups[i].id);
-        var tempp = JSON.parse(devicesOfgroup);
-        //temp - laptop devices of the group
-        var temp = tempp.devices.filter( function(item){return (item.type=="linuxdevice");} );
-        if(temp.length>0) {
-            groupsWithLaptopDevices.push({
-                "group": userGroups[i],
-                "devices": temp
-            });
+        var groupsWithLaptopDevices=[];
+        for(var i=0;i<userGroups.length;i++) {
+            var devicesOfgroup = groupModule.getGroupDevices(userGroups[i].id);
+            var tempp = JSON.parse(devicesOfgroup);
+            //temp - laptop devices of the group
+            var temp = tempp.devices.filter( function(item){return (item.type=="linuxdevice");} );
+            if(temp.length>0) {
+                groupsWithLaptopDevices.push({
+                    "group": userGroups[i],
+                    "devices": temp
+                });
+            }
         }
-    }
     }
 
     var user = session.get(constants["USER_SESSION_KEY"]);
     var permissions = userModule.getUIPermissions();
     var viewModel = {};
 
-    log.info("___________________________________________");
-    log.info(user);
-    log.info("-------------------------------------------");
-    log.info(currentUser);
 
     viewModel.userGroups = groupsWithLaptopDevices;
     viewModel.userDevices = userDevices;

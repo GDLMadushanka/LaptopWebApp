@@ -50,46 +50,76 @@
 {{/zone}}
 
     {{#zone "body"}}
+    <br/>
+    <br/>
 
-        Hi {{currentUser.username}}<br/>
+    <div class="container">
+        <div class="row">
         {{#if adminUser}}
-            Your Groups :-<br/>
+            {{#if userGroups.length}}
+                <h3>Device groups</h3>
+            {{/if}}
             {{#each userGroups}}
-                <p>{{this.group.name}}</p>
-                <a href="{{@app.context}}/device/linuxdevice/groupanalytics?groupId={{this.group.id}}"
-                   class="btn btn-xs btn-success">Group Analytics</a>
-                <button class="btn btn-warning" onclick="showDevicesDiv('{{this.group.name}}')">Expand Group</button>
-                <br/>
-                <br/>
-                <div id="group{{this.group.name}}devices" style="display: none;">
-                    {{#each this.devices}}
-                        <p>{{this.name}}</p>
-                        <a href="{{@app.context}}/device/linuxdevice?id={{this.deviceIdentifier}}"
-                           class="btn btn-primary btn-xs">Realtime analytics</a>
-
-                        <a href="{{@app.context}}/device/linuxdevice/analytics?deviceId={{this.deviceIdentifier}}&deviceName={{this.name}}"
-                           class="btn btn-info btn-xs">Batch analytics</a>
-
-                    {{/each}}
+            <div class="col-xs-6 col-sm-4 col-lg-3">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <i class="fa fa-cogs fa-4x" aria-hidden="true" ></i>
+                        <h3>{{this.group.name}}</h3>
+                        <p>Group Id : {{this.group.id}}</p>
+                        <p>Group Owner : {{this.group.owner}}</p>
+                        <p>Number of devices : {{this.devices.length}}</p>
+                            <a href="{{@app.context}}/device/linuxdevice/groupanalytics?groupId={{this.group.id}}"
+                               class="btn btn-xs btn-success">Group Analytics</a>
+                        <button class="btn btn-warning" onclick="showDevicesDiv('{{this.group.name}}')"> <i class="fa fa-chevron-circle-right" aria-hidden="true" ></i></button>
+                    </div>
                 </div>
+            </div>
+            <div id="group{{this.group.name}}devices" style="display: none;">
+                {{#each this.devices}}
+                <div class="col-xs-4 col-sm-3 col-lg-2">
+                    <div class="thumbnail">
+                        <div class="caption">
+                            <i class="fa fa-laptop fa-4x" aria-hidden="true" ></i>
+                            <h5>{{this.name}}</h5>
+                            <a href="{{@app.context}}/device/linuxdevice?id={{this.deviceIdentifier}}"
+                               class="btn btn-primary btn-xs"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
+                            <a href="{{@app.context}}/device/linuxdevice/analytics?deviceId={{this.deviceIdentifier}}&deviceName={{this.name}}"
+                               class="btn btn-info btn-xs"><i class="fa fa-bar-chart" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
             {{/each}}
         {{/if}}
 
-        <br/>
-        Your Devices :-</br>
-        {{#each userDevices}}
-            <p>{{this.name}}</p>
-            <a href="{{@app.context}}/device/linuxdevice?id={{this.deviceIdentifier}}"
-               class="btn btn-primary btn-xs">Realtime analytics</a>
-            <a href="{{@app.context}}/device/linuxdevice/analytics?deviceId={{this.deviceIdentifier}}&deviceName={{this.name}}"
-               class="btn btn-info btn-xs">Batch analytics</a>
-        {{/each}}
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            {{#if userDevices.length}}
+                <h3>Your devices</h3>
+            {{/if}}
+            {{#each userDevices}}
+                <div class="col-xs-4 col-sm-3 col-lg-2">
+                    <div class="thumbnail">
+                        <div class="caption">
+                            <i class="fa fa-laptop fa-4x" aria-hidden="true" ></i>
+                            <h5>{{this.name}}</h5>
+                            <a href="{{@app.context}}/device/linuxdevice?id={{this.deviceIdentifier}}"
+                               class="btn btn-primary btn-xs"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
+                            <a href="{{@app.context}}/device/linuxdevice/analytics?deviceId={{this.deviceIdentifier}}&deviceName={{this.name}}"
+                               class="btn btn-info btn-xs"><i class="fa fa-bar-chart" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
 
 
 
-
-
-        <!--<div id="openStreetMapId" style="height:100%"></div>-->
     {{/zone}}
 
 

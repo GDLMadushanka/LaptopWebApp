@@ -1,13 +1,4 @@
-.building-status{
-    padding: 6px 10px;
-    border-left: 3px solid red;
-    margin: 5px 3px;
-    height: 30px;
-    border-bottom: 1px solid rgba(51, 51, 51, 0.67);
-}
-.building-status span{
-    width: 30px;
-}
+
 .modal-content{
     padding: 20px;
 }
@@ -18,6 +9,28 @@ form .form-group label{
 .dropdown-menu {
     z-index: 1010;
 }
-.building-info{
-    overflow: auto;
+
+.flex-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+.flex-row > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-row .thumbnail,
+.flex-row .caption {
+    flex-direction: column;
+    display: flex;
+    flex: 1 0 auto;
+    height: auto;
+    position: relative;
+}
+.flex-text {
+    flex-grow: 1;
+}
+.flex-row img {
+    min-width: 0;
+    width: 100%;
 }
