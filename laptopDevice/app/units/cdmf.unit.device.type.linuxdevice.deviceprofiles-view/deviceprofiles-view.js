@@ -22,11 +22,17 @@ function onRequest(context) {
     var profilesUrl = devicemgtProps["httpsURL"] + "/linuxdevice/1.0.0/device/profiles";
     var serviceInvokers = require("/app/modules/oauth/token-protected-service-invokers.js")["invokers"];
     var log = new Log("stats.js");
+    var userModule = require("/app/modules/business-controllers/user.js")["userModule"];
+    var user = userModule.getCarbonUser();
+    var tenantDomain = user.domain;
 
     viewModel["profileTypes"] = [];
     serviceInvokers.XMLHttp.get(
         profilesUrl, function (responsePayload) {
-            viewModel["profileTypes"] = JSON.parse(responsePayload.responseText);
+            var profileTypes = JSON.parse(responsePayload.responseText);
+            var filteredProfiles= profileTypes.filter( function(item){return (item.TENANT_ID==tenantDomain);} );
+
+            viewModel["profileTypes"] = filteredProfiles;
         },
         function (responsePayload) {
             new Log().error(responsePayload);

@@ -27,6 +27,8 @@ function onRequest() {
     var deviceModule = require("/app/modules/business-controllers/device.js")["deviceModule"];
     var groupModule = require("/app/modules/business-controllers/group.js")["groupModule"];
 
+    var user = userModule.getCarbonUser();
+    var tenantDomain = user.domain;
 
     var alldevices = deviceModule.getDevices();
 

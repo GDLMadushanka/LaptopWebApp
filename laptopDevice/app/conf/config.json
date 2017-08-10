@@ -1,5 +1,5 @@
 {
-  "appContext": "/buildingmonitor/",
+  "appContext": "/laptopDevice/",
   "httpsURL": "https://%iot.gateway.host%:%iot.gateway.https.port%",
   "httpURL": "http://%iot.gateway.host%:%iot.gateway.http.port%",
   "wssURL": "wss://%iot.analytics.host%:%iot.analytics.https.port%",

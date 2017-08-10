@@ -1,5 +1,5 @@
 .login-bg{
-    background: url('images/1.jpg') bottom left no-repeat fixed;
+    background: url('images/2.jpg') bottom left no-repeat fixed;
 }
 
 body.login-bg{
@@ -7,7 +7,7 @@ body.login-bg{
 }
 
 .block-login{
-    background: rgba(245, 0, 245, 0.2);
+    background: rgba(39,84,209, 0.6);
     padding: 20px;
     border-radius: 10px;
 }
