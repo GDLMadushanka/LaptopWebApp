@@ -24,13 +24,12 @@ function onRequest(context) {
     var log = new Log("stats.js");
     var userModule = require("/app/modules/business-controllers/user.js")["userModule"];
     var user = userModule.getCarbonUser();
-    var tenantDomain = user.domain;
-
+    var tenantId = user.tenantId;
     viewModel["profileTypes"] = [];
     serviceInvokers.XMLHttp.get(
         profilesUrl, function (responsePayload) {
             var profileTypes = JSON.parse(responsePayload.responseText);
-            var filteredProfiles= profileTypes.filter( function(item){return (item.TENANT_ID==tenantDomain);} );
+            var filteredProfiles= profileTypes.filter( function(item){return (item.tenantId==tenantId);} );
 
             viewModel["profileTypes"] = filteredProfiles;
         },
