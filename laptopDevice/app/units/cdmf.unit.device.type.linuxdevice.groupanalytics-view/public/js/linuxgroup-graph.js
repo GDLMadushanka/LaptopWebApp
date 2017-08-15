@@ -17,7 +17,7 @@
  * under the License.
  */
 var groupId =1;
-var profileId ="Lenovo16GB";
+var profileId =null;
 var currentSummaryTime = "1HR";
 var currentSensorName ="memoryusage";
 var timeFormat = 'hh:mm';
@@ -36,6 +36,7 @@ var persist_diskusage = []
  var avgCpuUsage=0;
 
  $(document).ready(function () {
+     profileId=$("#profileName").find("option:first-child").val();
      var websocketUrl = $("#laptop-details").data("websocketurl");
      groupId = $("#laptop-details1").data("groupid");
      console.log(websocketUrl);
